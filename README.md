@@ -3,10 +3,14 @@
 [![sinitaivas-live](https://github.com/letiziaia/sinitaivas-live/actions/workflows/validate.yml/badge.svg)](https://github.com/letiziaia/sinitaivas-live/actions/workflows/validate.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.0+-blue.svg)](https://www.python.org/downloads/release/python-3100/)
 [![codecov](https://codecov.io/gh/letiziaia/sinitaivas-live/graph/badge.svg?token=EY3Ha33SAF)](https://codecov.io/gh/letiziaia/sinitaivas-live)
+[![DOI](https://zenodo.org/badge/1000111410.svg)](https://doi.org/10.5281/zenodo.15641656)
 [![CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-sa/4.0/)
 
 Welcome to the real-time data collection of the entire [Bluesky](https://bsky.app/)!
-Here below you find more info on the pipeline for the data collection.
+Here below you find more info on the pipeline for the data collection and on how to use the data for research and analysis.
+
+Ig you use the code or instructions in this repository in your research, please cite it using the DOI above.
+
 
 (_sinitaivas_ means _bluesky_ in Finnish)
 
