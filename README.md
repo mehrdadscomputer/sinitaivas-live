@@ -20,7 +20,7 @@ If you use the code or instructions in this repository in your research, please 
 - [Data format](#data-format)
 - [Events](#events)
 - [Data partitioning](#data-partitioning)
-- [How to get started with data](#how-to-get-started-with-data)
+- [How to get started](#how-to-get-started)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contacts](#contacts)
@@ -145,7 +145,9 @@ Once you have decided what part of the data you want to extract from the raw fil
 
 Besides this, partitions are also easier to manage, back up, and restore compared to a single large dataset, they help in managing and scaling large datasets, and make it easier to manage data lifecycle (e.g., data retention policies or archiving).
 
-## How to get started with data
+## How to get started
+
+_Step 0:_ Start the data collection. See [RUNBOOK.md](RUNBOOK.md) for details.
 
 _Step 1:_ Randomly choose one file and familiarize yourself with the data format. You can also refer to Bluesky documentation.
 
