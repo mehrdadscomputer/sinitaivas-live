@@ -1,6 +1,6 @@
 # sinitaivas-live as a Monitored Service
 
-If you have a Linux server or VM, you can use the scripts in this folder to deploy the service and monitor it.
+If you have a Linux server or VM, you can use the scripts in this folder to run the data collection as a `systemd` managed service and monitor it.
 
 The service definition needs to be stored under `/etc/systemd/system`, as it is custom in Unix systems. Modify the template `sinitaivas-live.service` and save the file under the correct path.
 
@@ -25,6 +25,8 @@ The service is actively monitored and also has autorestart within 5 seconds. If 
 If, despite this, you find yourself in need of restarting the service, you can do so from terminal
 (same instructions as above).
 
+Otherwise, the data stream is continuous and ongoing, and the service runs 24/7.
+
 ## Cron Jobs
 
 ### What does _actively monitored_ mean?
@@ -44,6 +46,8 @@ The service dumps data from Bluesky Firehose as one json line per event in parti
 ### Data Sync
 
 The `crontab.template` also defines one job to sync up gzipped data via ssh from the directory of collection to another location. Note that the `rsync` cron job does not delete the raw data from the place of collection. If you need to clean up data after `rsync`, you can define another script (e.g. `delete_folders.sh`) and add another cron job to run daily. Make sure to allow enough time for disaster recovery, should the sync start to fail.
+
+Our pipeline is meant to batch the sync to your directory only once per hour. Should you need more frequent sync, you can ask for help or advice to the contacts below.
 
 ## Manual Ops
 
@@ -99,3 +103,16 @@ sudo systemctl restart sinitaivas-live.service
 ```
 
 Finally, check that the service is up and running. You can check this from the service status and by tailing the latest data file or the logs.
+
+## Contacts
+
+If you still have questions, want some more tips how to get started, or want to say that this does not make any sense and the entire setup should be changed, you can reach out:
+
+- Letizia Iannucci (letizia.iannucci@aalto.fi),
+  [@letiletizia on Telegram](https://t.me/letiletizia),
+  [@letiziaia on GitHub](https://github.com/letiziaia),
+  and of course [@letiziaian.bsky.social on Bluesky](https://bsky.app/profile/letiziaian.bsky.social)
+
+## Last Updated
+
+2025-06-11

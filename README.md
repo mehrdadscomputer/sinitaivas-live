@@ -1,26 +1,26 @@
 # Sinitaivas Live
+
 [![CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-sa/4.0/)
 
 Welcome to the real-time data collection of the entire [Bluesky](https://bsky.app/)!
 Here below you find more info on the pipeline for the data collection.
 
+(_sinitaivas_ means _bluesky_ in Finnish)
+
 ## Table of Contents
 
 - [Bluesky Firehose](#bluesky-firehose)
-- [Sinitaivas](#sinitaivas)
 - [How to get started with data](#how-to-get-started-with-data)
 - [Contacts](#contacts)
 - [Last Updated](#last-updated)
 
 [BlueSky Firehose](https://docs.bsky.app/docs/advanced-guides/firehose) is an authenticated stream of real-time events from the social media (i.e. user updates). We have developed a data streaming service that collects real-time data from Blueksky Firehose and provides a continuous stream of **all** data to a desired local directory. All data means exactly _all data_: all users, all languages, all activities that are possible on the social.
 
-The data is collected by keeping an active subscription to Bluesky Firehose API. The subscription service runs as a `systemd` managed service.
+The data is collected by keeping an active subscription to Bluesky Firehose API (see `/ops` for how to run the collection as a managed service in unix environment).
 
 Live stream means a continuous, real-time transmission of data as it is generated. In the context of the Bluesky Firehose, this means that we are collecting and providing data in real-time as it happens on the Bluesky social media platform. This includes all user activities, updates, and interactions that occur on the platform at the moment when our subscription to Bluesky Firehose API is up and running.
 
-The data is collected immediately as events occur on the platform. There is no significant delay between the occurrence of an event and its availability in the data stream. However, our pipeline is meant to batch the sync to your directory only once per hour. Should you need more frequent sync, you can ask for help or advice to the contacts below.
-
-The data stream is continuous and ongoing, and the service runs 24/7.
+The data is collected immediately as events occur on the platform. There is no significant delay between the occurrence of an event and its availability in the data stream.
 
 ### FAQ
 
@@ -31,26 +31,13 @@ The data stream is continuous and ongoing, and the service runs 24/7.
    No, at least not from Bluesky Firehose. However, Bluesky provides an API from which you can also download activities that happened in the past. But the historical collection is not implemented here.
 
 3. **What Format is the Data in?**
-   The data is stored in gzipped NDJSON (compressed Newline Delimited JSON) format, where each event is stored on a separate line.
+   The data is collected as NDJSON (Newline Delimited JSON) and stored as is or later compressed by gzip (see `/ops`). In either case, each event is stored on a separate line.
 
 4. **Is the Data Anonymized?**
    No. The data is collected as raw, exactly as it comes after decoding the message from Bluesky Firehose.
 
-5. **What Happens If the Service Goes Down?**
-   The service is actively monitored and has an auto-restart mechanism within 5 seconds. If the service crashes or is restarted, it tries to resume from the latest known position of the cursor, minimizing data loss.
-
-
-## Sinitaivas
-
-Our service is called `sinitaivas-live` (_sinitaivas_ means _bluesky_ in Finnish)
-
-### What does _actively monitored_ mean?
-
-The `sinitaivas-live` service has [structured logging](https://www.sumologic.com/glossary/structured-logging/) in place.
-
-### How to deploy a new version of the service
-
-
+5. **What Happens If the Collection Crashes?**
+   If the data collection crashes or is restarted, it tries to resume from the latest known position of the cursor, minimizing data loss.
 
 ## Data Format
 
@@ -144,7 +131,7 @@ Data partitioning improves performance, manageability, and scalability of data s
 
 Once you have decided what part of the data you want to extract from the raw file, having partitions also means that we can define efficient queries on the raw data (yes, we can write queries on these json files). Whichever engine you use to run the queries, you can significantly reduce the amount of data scanned (and therefore the time for data processing) by querying only the relevant partitions or by using partitions already as filters. Partitioning also allows for parallel processing of data, where multiple partitions can be processed simultaneously, improving overall performance. In general, decent partitioning leads to faster query performance. For example, you can use wildcards to query all data for one specific day (`/1999-01-01/*.ndjson.gz`) or all data for one specific month (`/1999-01-*/*.ndjson.gz`) without the need for your query to scan the rest of the data.
 
-Besides this, partitions are also easier to manage, back up, and restore compared to a single large dataset, they help in managing and scaling large datasets, and make it easier to manage data lifecycle (e.g., data retention policies or archiving). 
+Besides this, partitions are also easier to manage, back up, and restore compared to a single large dataset, they help in managing and scaling large datasets, and make it easier to manage data lifecycle (e.g., data retention policies or archiving).
 
 ## How to get started with data
 
