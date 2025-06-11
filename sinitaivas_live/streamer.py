@@ -15,13 +15,13 @@ import json
 import os
 from datetime import datetime
 from typing import Any, Dict
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 import sinitaivas_live.constants as const
 import utils.datetime_utils as dt_utils
 import utils.files_storage as fs
 import utils.bytes_io as bytes_io
 from utils.logging import logger, log_before_retry, log_after_retry
-from tenacity import retry, stop_after_attempt, wait_exponential
 
 
 def process_commit(commit: models.ComAtprotoSyncSubscribeRepos.Commit) -> None:
