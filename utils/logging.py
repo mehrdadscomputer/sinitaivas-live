@@ -3,12 +3,12 @@ from loguru import logger
 from tenacity import RetryCallState
 import os
 
+import utils.files_storage as fs
+
 logger = logger
 
-# log file goes to the same directory as the entry point script, with the same name as the script
 entry_point = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-entry_point_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-log_file_name = os.path.join(entry_point_dir, f"{entry_point}.log")
+log_file_name = os.path.join(fs.current_dir(), f"{entry_point}.log")
 
 logger.configure(
     handlers=[

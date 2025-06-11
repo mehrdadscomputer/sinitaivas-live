@@ -1,4 +1,13 @@
 from pathlib import Path
+import os
+
+
+def current_dir() -> str:
+    """
+    Get the current working directory.
+    :return: The current working directory as a string.
+    """
+    return os.getcwd()
 
 
 def create_dir_if_not_exists(prefix: str) -> None:

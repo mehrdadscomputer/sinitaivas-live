@@ -62,7 +62,7 @@ def _process_op(
     """
     current_utc_time_str = dt_utils.datetime_as_date_and_hour_str(current_utc_time)
     current_utc_date_str = dt_utils.datetime_as_date_str(current_utc_time)
-    prefix = f"firehose_stream/{current_utc_date_str}"
+    prefix = f"{fs.current_dir()}/firehose_stream/{current_utc_date_str}"
     fs.create_dir_if_not_exists(prefix)
     output_filename = f"{prefix}/{current_utc_time_str}.ndjson"
 
@@ -187,10 +187,12 @@ def reset_cursor(client: FirehoseSubscribeReposClient) -> None:
     # pop the streamer cursor
     cursor.pop("streamer", None)
     try:
-        with open(const.CURSORS_FILE, "w") as f:
+        with open(const.PATH_TO_CURSORS_FILE, "w") as f:
             json.dump(cursor, f)
     except Exception as e:
-        logger.bind(file=const.CURSORS_FILE).error(f"Failed to reset cursor: {e}")
+        logger.bind(file=const.PATH_TO_CURSORS_FILE).error(
+            f"Failed to reset cursor: {e}"
+        )
 
 
 def update_cursor(client: FirehoseSubscribeReposClient, cursor_position: int) -> None:
@@ -211,10 +213,12 @@ def update_cursor(client: FirehoseSubscribeReposClient, cursor_position: int) ->
         "updated_at": dt_utils.datetime_as_zulu_str(dt_utils.current_datetime_utc()),
     }
     try:
-        with open(const.CURSORS_FILE, "w") as f:
+        with open(const.PATH_TO_CURSORS_FILE, "w") as f:
             json.dump(cursor, f)
     except Exception as e:
-        logger.bind(file=const.CURSORS_FILE).error(f"Failed to update cursor: {e}")
+        logger.bind(file=const.PATH_TO_CURSORS_FILE).error(
+            f"Failed to update cursor: {e}"
+        )
 
 
 def read_cursor() -> Dict[str, Any]:
@@ -224,12 +228,13 @@ def read_cursor() -> Dict[str, Any]:
     Returns:
         Dict[str, Any]: The content of cursors file.
     """
-    file = const.CURSORS_FILE
     try:
-        with open(file, "r") as f:
+        with open(const.PATH_TO_CURSORS_FILE, "r") as f:
             return json.load(f)  # type: ignore
     except Exception as e:
-        logger.bind(file=file).error(f"Failed to read cursors file: {e}")
+        logger.bind(file=const.PATH_TO_CURSORS_FILE).error(
+            f"Failed to read cursors file: {e}"
+        )
         return {}
 
 
