@@ -10,7 +10,7 @@ Here below you find more info on the pipeline for the data collection and on how
 
 (_sinitaivas_ means _bluesky_ in Finnish)
 
-If you use the code or instructions in this repository in your research, please cite it using the DOI above. Here's the latest publications that have used data collected with _Sinitaivas Live_ code:
+If you use the code or instructions in this repository in your research, please cite it using the DOI above (see [https://zenodo.org/records/15641657](https://zenodo.org/records/15641657)). Here's the latest publications that have used data collected with _Sinitaivas Live_ code:
 
 - [![arXiv](https://img.shields.io/badge/arXiv-2506.03443-b31b1b.svg)](https://www.arxiv.org/pdf/2506.03443) Salloum A., Quelle D., Iannucci L., Bovet A., Kivelä M. ["Politics and Polarization on Bluesky"](https://www.arxiv.org/pdf/2506.03443)
 
