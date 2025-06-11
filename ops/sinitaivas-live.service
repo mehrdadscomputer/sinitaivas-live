@@ -1,0 +1,16 @@
+[Unit]
+Description=Sinitativas-Live Streamer
+After=network.target
+
+[Service]
+WorkingDirectory=<path-to-sinitaivas-live>
+ExecStart=/bin/bash -c "source $(pipenv --venv)/bin/activate && exec python -m sinitaivas_live.main --mode resume"
+Restart=always
+RestartSec=5
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=sinitaivas-live
+User=<your-user>
+
+[Install]
+WantedBy=multi-user.target
