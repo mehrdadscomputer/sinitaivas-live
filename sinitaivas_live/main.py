@@ -20,7 +20,7 @@ def main(mode: str):
     ----------------
     Example usage:
     ----------------
-    python -m sinitaivas_live.main --mode fresh
+    python -m sinitavas_live.main --mode fresh
     python -m sinitaivas_live.main --mode resume
     """
     logger.info(f"Starting streamer process as {mode}")
