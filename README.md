@@ -1,6 +1,9 @@
 # Sinitaivas Live
 
 [![CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-sa/4.0/)
+[![sinitaivas-live](https://github.com/letiziaia/sinitaivas-live/actions/workflows/validate.yml/badge.svg)](https://github.com/letiziaia/sinitaivas-live/actions/workflows/validate.yml)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/release/python-3110/)
+[![codecov](https://codecov.io/gh/letiziaia/sinitaivas-live/graph/badge.svg?token=s4ZAsLnIim)](https://codecov.io/gh/letiziaia/sinitaivas-live)
 
 Welcome to the real-time data collection of the entire [Bluesky](https://bsky.app/)!
 Here below you find more info on the pipeline for the data collection.
