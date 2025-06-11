@@ -14,6 +14,8 @@ Here below you find more info on the pipeline for the data collection.
 
 - [Bluesky Firehose](#bluesky-firehose)
 - [How to get started with data](#how-to-get-started-with-data)
+- [Contributing](#contributing)
+- [License](#license)
 - [Contacts](#contacts)
 - [Last Updated](#last-updated)
 
@@ -148,6 +150,14 @@ _Step 2:_ Download and install a database client or a library that supports hand
 - ...
 
 _Step 3:_ Save your version of preprocessed data
+
+## Contributing
+
+Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on contributions, code style, and pull request workflow.
+
+## License
+
+See [LICENSE.md](LICENSE.md).
 
 ## Contacts
 
