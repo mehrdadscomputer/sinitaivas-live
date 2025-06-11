@@ -1,5 +1,5 @@
 import base64
-from typing import Dict, List, Union, overload
+from typing import Union, overload
 
 from utils.logging import logger
 
@@ -9,14 +9,14 @@ def convert_bytes_to_str(obj: bytes) -> str: ...
 
 
 @overload
-def convert_bytes_to_str(obj: List[bytes]) -> List[str]: ...
+def convert_bytes_to_str(obj: list[bytes]) -> list[str]: ...
 
 
 @overload
-def convert_bytes_to_str(obj: Dict[bytes, bytes]) -> Dict[str, str]: ...
+def convert_bytes_to_str(obj: dict[bytes, bytes]) -> dict[str, str]: ...
 
 
-def convert_bytes_to_str(obj: Union[Dict, List, bytes]) -> Union[Dict, List, str]:
+def convert_bytes_to_str(obj: Union[dict, list, bytes]) -> Union[dict, list, str]:
     """
     Recursively converts bytes to strings in a JSON-like object.
     Parameters:

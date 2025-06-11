@@ -16,7 +16,7 @@ import os
 from datetime import datetime
 from typing import Any, Dict
 
-import firehose.constants as const
+import sinitaivas_live.constants as const
 import utils.datetime_utils as dt_utils
 import utils.files_storage as fs
 import utils.bytes_io as bytes_io

@@ -1,5 +1,5 @@
 import click
-from firehose.streamer import streamer_main
+from sinitaivas_live.streamer import streamer_main
 from utils.logging import logger, handle_catch_error
 
 
