@@ -287,6 +287,7 @@ def read_last_seq_from_file() -> int:
             if last_line:
                 last_line_json = json.loads(last_line[0])
                 return int(last_line_json["seq"])
+            logger.bind(last_line=last_line).warning("No content in the latest line")
             return 0
 
     except Exception as e:
