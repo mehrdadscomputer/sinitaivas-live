@@ -125,7 +125,7 @@ def _extract_record_from_blocks(
     except Exception as e:
         # this fails for invalid utf-8 bytes
         logger.bind(model_instance=model_instance).warning(
-            f"Failed to get model instance as json: {e}"
+            f"Failed to update commit event with model instance json: {e}"
         )
         try:
             model_dict = get_model_as_dict(model_instance)
@@ -235,7 +235,7 @@ def update_cursor(client: FirehoseSubscribeReposClient, cursor_position: int) ->
             json.dump(cursor, f)
     except Exception as e:
         logger.bind(file=const.PATH_TO_CURSORS_FILE).error(
-            f"Failed to update cursor: {e}"
+            f"Failed to update cursor file: {e}"
         )
 
 
