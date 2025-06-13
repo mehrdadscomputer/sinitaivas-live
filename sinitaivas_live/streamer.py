@@ -12,10 +12,11 @@ from atproto import (
     parse_subscribe_repos_message,
 )
 import json
-import os
+import glob
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any
 from tenacity import retry, stop_after_attempt, wait_exponential
+from collections import deque
 
 import sinitaivas_live.constants as const
 import utils.datetime_utils as dt_utils
@@ -74,13 +75,13 @@ def _process_op(
 
 
 def _save_commit_info_to_file(
-    commit_info: Dict[str, Any], output_filename: str
+    commit_info: dict[str, Any], output_filename: str
 ) -> None:
     """
     Save the commit info to a JSON file.
 
     Parameters:
-        commit_info (Dict[str, Any]): The commit info to save.
+        commit_info (dict[str, Any]): The commit info to save.
         output_filename (str): The output file name.
     Returns:
         None
@@ -97,17 +98,17 @@ def _save_commit_info_to_file(
 def _extract_record_from_blocks(
     car: CAR,
     op: models.ComAtprotoSyncSubscribeRepos.RepoOp,
-    commit_info: Dict[str, Any],
-) -> Dict[str, Any]:
+    commit_info: dict[str, Any],
+) -> dict[str, Any]:
     """
     Extract the record from the blocks.
 
     Parameters:
         car (CAR): The CAR object.
         op (models.ComAtprotoSyncSubscribeRepos.RepoOp): The operation to process.
-        commit_info (Dict[str, Any]): The commit info to update.
+        commit_info (dict[str, Any]): The commit info to update.
     Returns:
-        Dict[str, Any]: The updated commit info.
+        dict[str, Any]: The updated commit info.
     """
     raw_record = car.blocks.get(op.cid)
     record = get_or_create(raw_record, strict=False)
@@ -135,7 +136,7 @@ def _init_commit_info(
     commit: models.ComAtprotoSyncSubscribeRepos.Commit,
     op: models.ComAtprotoSyncSubscribeRepos.RepoOp,
     current_utc_time: datetime,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
     Initialize the commit info.
     Parameters:
@@ -147,7 +148,7 @@ def _init_commit_info(
             Represents a repo operation, ie a mutation of a single record.
         current_utc_time (datetime): The current datetime in UTC timezone.
     Returns:
-        Dict[str, Any]: The initialized commit info.
+        dict[str, Any]: The initialized commit info.
     """
     try:
         uri = AtUri.from_str(f"at://{commit.repo}/{op.path}")
@@ -221,12 +222,12 @@ def update_cursor(client: FirehoseSubscribeReposClient, cursor_position: int) ->
         )
 
 
-def read_cursor() -> Dict[str, Any]:
+def read_cursor() -> dict[str, Any]:
     """
     Read the cursor from the cursors file.
 
     Returns:
-        Dict[str, Any]: The content of cursors file.
+        dict[str, Any]: The content of cursors file.
     """
     try:
         with open(const.PATH_TO_CURSORS_FILE, "r") as f:
@@ -245,27 +246,31 @@ def read_last_seq_from_file() -> int:
     Returns:
         int: The last sequence value.
     """
-    json_files = [file for file in os.listdir() if file.endswith(".ndjson")]
-    if len(json_files) == 0:
-        logger.warning("No JSON files found")
+    # get all ndjson files under firehose_stream
+    json_files = sorted(
+        file
+        for file in glob.glob(
+            f"{fs.current_dir()}/firehose_stream/**/*.ndjson", recursive=False
+        )
+    )
+    if not json_files:
+        logger.warning("No ndjson files found")
         return 0
 
-    # Sort the files by modification time and get the most recently modified file
-    latest_json_file = max(json_files, key=lambda x: os.path.getmtime(x))
+    # max by name, which is the latest date and hour
+    latest_file = json_files[-1]
 
     try:
-        # Get the last line of the latest modified file
-        with open(latest_json_file, "r") as file:
-            # Seek to the end of the file
-            file.seek(0, os.SEEK_END)
-            file.seek(file.tell() - 2, os.SEEK_SET)
-            while file.read(1) != "\n":
-                file.seek(file.tell() - 2, os.SEEK_SET)
-            last_line = file.readline()
-            last_line_json = json.loads(last_line)
-        return int(last_line_json["seq"])
+        # read last line from the latest json file
+        with open(latest_file, "r") as file:
+            last_line = deque(file, maxlen=1)
+            if last_line:
+                last_line_json = json.loads(last_line[0])
+                return int(last_line_json["seq"])
+            return 0
+
     except Exception as e:
-        logger.bind(latest_json_file=latest_json_file).error(
+        logger.bind(latest_file=latest_file).error(
             f"Failed to read last seq from file: {e}"
         )
         return 0
