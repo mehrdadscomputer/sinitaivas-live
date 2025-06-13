@@ -114,24 +114,26 @@ def _extract_record_from_blocks(
     Returns:
         dict[str, Any]: The updated commit event.
     """
-    raw_record = car.blocks.get(op.cid)
-    record = get_or_create(raw_record, strict=False)
-    if not record:
-        logger.bind(raw_record=raw_record).warning("No record from blocks")
+    model_data = car.blocks.get(op.cid)
+    model_instance = get_or_create(model_data, strict=False)
+    if not model_instance:
+        logger.bind(model_data=model_data).warning("No model instance")
         return commit_event
     try:
-        record_json = get_model_as_json(record)
-        commit_event.update(json.loads(record_json))
+        model_json = get_model_as_json(model_instance)
+        commit_event.update(json.loads(model_json))
     except Exception as e:
         # this fails for invalid utf-8 bytes
-        logger.bind(record=record).warning(f"Failed to get record as JSON: {e}")
+        logger.bind(model_instance=model_instance).warning(
+            f"Failed to get model instance as json: {e}"
+        )
         try:
-            record_json = get_model_as_dict(record)
-            record_json = bytes_io.convert_bytes_to_str(record_json)
-            commit_event.update(record_json)
+            model_dict = get_model_as_dict(model_instance)
+            model_dict = bytes_io.convert_bytes_to_str(model_dict)
+            commit_event.update(model_dict)
         except Exception as e:
-            logger.bind(record=record).error(
-                f"Failed to update commit_event with record from blocks: {e}"
+            logger.bind(model_instance=model_instance).error(
+                f"Failed to update commit event with model instance dictionary: {e}"
             )
     return commit_event
 
