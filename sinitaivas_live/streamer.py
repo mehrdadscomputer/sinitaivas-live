@@ -203,6 +203,7 @@ def reset_cursor(client: FirehoseSubscribeReposClient) -> None:
     cursor.pop("streamer", None)
     try:
         with open(const.PATH_TO_CURSORS_FILE, "w") as f:
+            # dump an empty cursor dictionary
             json.dump(cursor, f)
     except Exception as e:
         logger.bind(file=const.PATH_TO_CURSORS_FILE).error(
