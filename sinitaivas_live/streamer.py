@@ -186,10 +186,10 @@ def _init_commit_event(
 
 
 def reset_cursor(client: FirehoseSubscribeReposClient) -> None:
-    """Reset the cursor in the client and in cursors file.
+    """Reset the cursor in the client and in cursor file.
     This function sets the cursor to None in the client and removes the
-    "streamer" key from the cursors file. It also handles any exceptions
-    that may occur while writing to the cursors file.
+    "streamer" key from the cursor file. It also handles any exceptions
+    that may occur while writing to the cursor file.
 
     Parameters:
         client (FirehoseSubscribeReposClient): The client to reset.
@@ -213,8 +213,8 @@ def reset_cursor(client: FirehoseSubscribeReposClient) -> None:
 
 def update_cursor(client: FirehoseSubscribeReposClient, cursor_position: int) -> None:
     """Update the cursor position in the client and writes the updated cursor position
-    to the cursors file, with the new cursor position and the current UTC time.
-    If the cursors file cannot be written, it logs an error.
+    to the cursor file, with the new cursor position and the current UTC time.
+    If the cursor file cannot be written, it logs an error.
 
     Parameters:
         client (FirehoseSubscribeReposClient): The client to update
@@ -241,18 +241,18 @@ def update_cursor(client: FirehoseSubscribeReposClient, cursor_position: int) ->
 
 
 def read_cursor() -> dict[str, Any]:
-    """Read the cursors file and return its content.
+    """Read the cursor file and return its content.
     If the file does not exist or cannot be read, it logs an error and returns an empty dictionary.
 
     Returns:
-        cursor_streamer (dict[str, Any]): The content of cursors file.
+        cursor_streamer (dict[str, Any]): The content of cursor file.
     """
     try:
         with open(const.PATH_TO_CURSORS_FILE, "r") as f:
             return json.load(f)  # type: ignore
     except Exception as e:
         logger.bind(file=const.PATH_TO_CURSORS_FILE).error(
-            f"Failed to read cursors file: {e}"
+            f"Failed to read cursor file: {e}"
         )
         return {}
 
@@ -307,7 +307,7 @@ def get_fresh_client() -> FirehoseSubscribeReposClient:
 
 def resume_streamer() -> FirehoseSubscribeReposClient:
     """Resume the streamer from the last known cursor position.
-    The cursor position is read from the cursors file.
+    The cursor position is read from the cursor file.
     If the cursor position is not found, it reads the last sequence from the latest ndjson file.
 
     Returns:
