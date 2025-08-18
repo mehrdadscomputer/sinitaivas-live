@@ -1,10 +1,33 @@
-MAILTO="<your_email>"
+MAILTO="mehrdadscomputer@gmail.com"
 
 # every 20 minutes, check that service is running and not erroring
-*/20 * * * * /<path-to->/monitoring.sh
+*/20 * * * * /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/monitoring.sh
 
 # every hour, compress file
-5 * * * * /<path-to>/gzip_previous_hour.sh >> /<path-to>/gzip_previous_hour.log 2>&1
+# 5 * * * * /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/gzip_previous_hour.sh >> /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/gzip_previous_hour.log 2>&1
+# Mehrdad
+3 * * * * /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/gzip_previous_hour.sh /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live >> /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/gzip_previous_hour.log 2>&1
+
 
 # every hour, copy the gzipped files via ssh
-10 */1 * * * rsync -avzc -e "ssh" --chmod=g+s,g+rw --group=<group-name> --include='*.gz' --exclude='*.ndjson' /<path-to>/firehose_stream <login-to-destination>:<path-to-destination>/
+# 10 */1 * * * rsync -avzc -e "ssh" --chmod=g+s,g+rw --group=mehrdad --include='*.gz' --exclude='*.ndjson' /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/firehose_stream <login-to-destination>:<path-to-destination>/
+
+# minute 31 every hour — upload only *.gz to Allas with s3cmd
+31 * * * * /usr/bin/s3cmd sync --exclude="*" --include="*.gz" /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/firehose_stream/ s3://sinitaivas --no-progress >> /home/mehrdad/logs/allas-sync.log 2>&1
+
+
+
+# Current one  2025-08-18
+# m h  dom mon dow   command
+*/20 * * * * bash /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/monitoring.sh /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/main.log
+
+5 * * * * bash /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/gzip_previous_hour.sh /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live >> /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/gzip_previous_hour.log 2>&1
+
+10 * * * * /usr/bin/s3cmd --config=/home/mehrdad/.s3cfg sync --exclude="*" --include="*.gz" /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/firehose_stream/ s3://sinitaivas --no-progress >> /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/logs/allas-sync.log 2>&1
+
+# Daily at 03:40 — delete whole YYYY-MM-DD folders older than 3 days
+40 3 * * * /usr/bin/env bash /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/delete_daily_folder.sh /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/firehose_stream 2 >> /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/logs/delete-daily.log 2>&1
+
+45 3 * * * /usr/bin/env bash /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/truncate_log.sh >> /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/logs/truncate-log.log 2>&1
+
+
