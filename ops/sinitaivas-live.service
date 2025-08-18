@@ -1,16 +1,20 @@
 [Unit]
-Description=Sinitativas-Live Streamer
-After=network.target
+Description=Sinitaivas Live Streamer
+After=network-online.target
+Wants=network-online.target
 
 [Service]
-WorkingDirectory=<path-to-sinitaivas-live>
-ExecStart=/bin/bash -c "source $(pipenv --venv)/bin/activate && exec python -m sinitaivas_live.main --mode resume"
+User=mehrdad
+Group=mehrdad
+WorkingDirectory=/home/mehrdad/projects/bluesky_scrapper/sinitaivas-live
+Environment=PYTHONUNBUFFERED=1
+# call the venv’s interpreter directly — no shell, no pipenv
+ExecStart=/home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/.venv/bin/python -m sinitaivas_live.main --mode resume
 Restart=always
 RestartSec=5
-StandardOutput=syslog
-StandardError=syslog
+StandardOutput=journal
+StandardError=journal
 SyslogIdentifier=sinitaivas-live
-User=<your-user>
 
 [Install]
 WantedBy=multi-user.target
