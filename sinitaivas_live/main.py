@@ -1,3 +1,4 @@
+#TODO checkout after a couple of days if delete_daily_folder script works
 import click
 from typing import Literal
 
