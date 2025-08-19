@@ -54,7 +54,9 @@ def _process_op(
     current_utc_date_str = dt_utils.datetime_as_date_str(current_utc_time)
 
     # output directory and filename
-    prefix = f"{fs.current_dir()}/firehose_stream/{current_utc_date_str}"
+    # prefix = f"{fs.current_dir()}/firehose_stream/{current_utc_date_str}"
+    # Mehrdad
+    prefix = f"/bigdata/salimi/bluesky/firehose_stream/{current_utc_date_str}"
     fs.create_dir_if_not_exists(prefix)
     output_filename = f"{prefix}/{current_utc_time_str}.ndjson"
 

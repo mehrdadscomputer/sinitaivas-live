@@ -21,7 +21,9 @@ fi
 
 # assign either the arg or the env var
 STREAM_ROOT="${1:-$STREAM_ROOT}"
-DATA_DIR="$STREAM_ROOT/firehose_stream"
+# DATA_DIR="$STREAM_ROOT/firehose_stream"
+# Mehrdad
+DATA_DIR="/bigdata/salimi/bluesky/firehose_stream"
 
 # sanity check
 if [[ ! -d "$DATA_DIR" ]]; then

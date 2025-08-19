@@ -130,6 +130,9 @@ def _get_json_files() -> list[str]:
     return sorted(
         file
         for file in glob.glob(
-            f"{fs.current_dir()}/firehose_stream/**/*.ndjson", recursive=False
+            # f"{fs.current_dir()}/firehose_stream/**/*.ndjson", recursive=False
+            # Mehrdad
+            f"/bigdata/salimi/bluesky/firehose_stream/**/*.ndjson", recursive=False
+
         )
     )

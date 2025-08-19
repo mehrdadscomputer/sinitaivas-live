@@ -1,10 +1,20 @@
 MAILTO="<your_email>"
 
-# every 20 minutes, check that service is running and not erroring
-*/20 * * * * /<path-to->/monitoring.sh
+# Current one  2025-08-18
 
-# every hour, compress file
-5 * * * * /<path-to>/gzip_previous_hour.sh >> /<path-to>/gzip_previous_hour.log 2>&1
+# Gzipping the ndjson files
+5 * * * * bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/gzip_previous_hour.sh /home/tko/salimi/projects/Bluesky/sinitaivas-live >> /home/tko/salimi/projects/Bluesky/sinitaivas-live/logs/gzip_previous_hour.log 2>&1
 
-# every hour, copy the gzipped files via ssh
-10 */1 * * * rsync -avzc -e "ssh" --chmod=g+s,g+rw --group=<group-name> --include='*.gz' --exclude='*.ndjson' /<path-to>/firehose_stream <login-to-destination>:<path-to-destination>/
+# Truncating the log file to the last 100 lines
+45 3 * * * /usr/bin/env bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/truncate_log.sh >> /home/tko/salimi/projects/Bluesky/sinitaivas-live/logs/truncate-log.log 2>&1
+#============================================================#
+
+# NOT NEEDED! Because on CS server we are running a python script instead of a system service
+*/20 * * * * bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/monitoring.sh /home/tko/salimi/projects/Bluesky/sinitaivas-live/main.log
+
+# NOT NEEDED! Because on CS server we are saving the data on the same server and not ALLAS
+10 * * * * /usr/bin/s3cmd --config=/home/mehrdad/.s3cfg sync --exclude="*" --include="*.gz" /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/firehose_stream/ s3://sinitaivas --no-progress >> /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/logs/allas-sync.log 2>&1
+
+# NOT NEEDED! Because we are saving the gzip files directly into the bigdata directory
+# Daily at 03:40 — delete whole YYYY-MM-DD folders older than 3 days
+40 3 * * * /usr/bin/env bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/delete_daily_folder.sh /bigdata/salimi/bluesky/firehose_stream 2 >> /home/tko/salimi/projects/Bluesky/sinitaivas-live/logs/delete-daily.log 2>&1
