@@ -30,4 +30,6 @@ MAILTO="mehrdadscomputer@gmail.com"
 
 45 3 * * * /usr/bin/env bash /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/truncate_log.sh >> /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/logs/truncate-log.log 2>&1
 
+# Email Masoud and Mehrdad if the script is not running
+10 * * * * bash /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/mail_incident.sh >> /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/logs/main_incident.log 2>&1
 
