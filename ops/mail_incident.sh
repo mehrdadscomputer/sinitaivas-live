@@ -2,7 +2,7 @@
 set -euo pipefail
 # --- CONFIGURATION ---
 BASE_DIR="/home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/firehose_stream"                  # root path where date dirs live
-EMAIL="mehrdadscomputer@gmail.com masoud.fatemi1990@gmail.com"            # recipient email
+EMAIL="mehrdadscomputer@gmail.com,masoud.fatemi1990@gmail.com"            # recipient email
 SUBJECT="Bluesky Python script is not running anymore on cPouta server"      # email subject
 
 # --- Current date and hour ---
