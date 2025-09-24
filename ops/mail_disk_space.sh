@@ -3,8 +3,9 @@ set -euo pipefail
 
 # --- CONFIGURATION ---
 EMAIL="mehrdadscomputer@gmail.com,masoud.fatemi1990@gmail.com"
+# EMAIL="mehrdadscomputer@gmail.com"
 SUBJECT="⚠️ Low Disk Space on cPouta Server"
-THRESHOLD_GB=40
+THRESHOLD_GB=30
 MOUNT_POINT="/home"
 LOG_FILE="/home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/logs/disk_space_check.log"
 
