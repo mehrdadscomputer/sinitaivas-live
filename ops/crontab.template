@@ -34,4 +34,4 @@ MAILTO="mehrdadscomputer@gmail.com"
 10 * * * * bash /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/mail_incident.sh >> /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/logs/main_incident.log 2>&1
 
 # Checking the available disk space
-0 6 * * * bash /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/mail_disk_space.sh
+0 18 * * * bash /home/mehrdad/projects/bluesky_scrapper/sinitaivas-live/ops/mail_disk_space.sh
