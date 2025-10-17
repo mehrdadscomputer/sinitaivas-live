@@ -7,6 +7,12 @@ MAILTO="<your_email>"
 
 # Truncating the log file to the last 100 lines
 45 3 * * * /usr/bin/env bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/truncate_log.sh >> /home/tko/salimi/projects/Bluesky/sinitaivas-live/logs/truncate-log.log 2>&1
+
+# Email Masoud and Mehrdad if the script is not running
+10 * * * * bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/mail_incident.sh >> /home/tko/salimi/projects/Bluesky/sinitaivas-live/logs/main_incident.log 2>&1
+
+# Logrotate for sinitaivas-live.log
+0 2 * * * /usr/sbin/logrotate -s /home/youruser/logrotate.status /home/youruser/logrotate.conf
 #============================================================#
 
 # NOT NEEDED! Because on CS server we are running a python script instead of a system service
