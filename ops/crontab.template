@@ -12,7 +12,7 @@ MAILTO="<your_email>"
 10 * * * * bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/mail_incident.sh >> /home/tko/salimi/projects/Bluesky/sinitaivas-live/logs/main_incident.log 2>&1
 
 # Logrotate for sinitaivas-live.log
-0 2 * * * /usr/sbin/logrotate -s /home/youruser/logrotate.status /home/youruser/logrotate.conf
+0 2 * * * /usr/sbin/logrotate -s /home/tko/salimi/logrotate.status /home/tko/salimi/logrotate.conf
 #============================================================#
 
 # NOT NEEDED! Because on CS server we are running a python script instead of a system service
