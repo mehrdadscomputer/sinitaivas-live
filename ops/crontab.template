@@ -5,16 +5,17 @@ MAILTO="<your_email>"
 # Gzipping the ndjson files
 5 * * * * bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/gzip_previous_hour.sh /home/tko/salimi/projects/Bluesky/sinitaivas-live >> /home/tko/salimi/projects/Bluesky/sinitaivas-live/logs/gzip_previous_hour.log 2>&1
 
-# Truncating the log file to the last 100 lines
-45 3 * * * /usr/bin/env bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/truncate_log.sh >> /home/tko/salimi/projects/Bluesky/sinitaivas-live/logs/truncate-log.log 2>&1
-
 # Email Masoud and Mehrdad if the script is not running
 10 * * * * bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/mail_incident.sh >> /home/tko/salimi/projects/Bluesky/sinitaivas-live/logs/main_incident.log 2>&1
 
 # Logrotate for sinitaivas-live.log
 0 2 * * * /usr/sbin/logrotate -s /home/tko/salimi/logrotate.status /home/tko/salimi/logrotate.conf
-#============================================================#
 
+
+
+
+
+#============================================================#
 # NOT NEEDED! Because on CS server we are running a python script instead of a system service
 */20 * * * * bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/monitoring.sh /home/tko/salimi/projects/Bluesky/sinitaivas-live/main.log
 
@@ -24,3 +25,6 @@ MAILTO="<your_email>"
 # NOT NEEDED! Because we are saving the gzip files directly into the bigdata directory
 # Daily at 03:40 — delete whole YYYY-MM-DD folders older than 3 days
 40 3 * * * /usr/bin/env bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/delete_daily_folder.sh /bigdata/salimi/bluesky/firehose_stream 2 >> /home/tko/salimi/projects/Bluesky/sinitaivas-live/logs/delete-daily.log 2>&1
+
+# Truncating the log file to the last 1000 lines
+45 3 * * * /usr/bin/env bash /home/tko/salimi/projects/Bluesky/sinitaivas-live/ops/truncate_log.sh >> /home/tko/salimi/projects/Bluesky/sinitaivas-live/logs/truncate-log.log 2>&1
